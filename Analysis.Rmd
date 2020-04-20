@@ -14,6 +14,5 @@ library(tidyverse)
 ```
 
 ```{r cars}
-data <- read.csv("data/Motor_Vehicles_Collision_-_Crashes.csv")
+data <- read.csv("data/Motor_Vehicle_Collisions_-_Crashes.csv")
 ```
-
