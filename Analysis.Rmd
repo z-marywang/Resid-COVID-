@@ -1,0 +1,19 @@
+---
+title: "Analysis"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Set Up
+
+```{r}
+library(tidyverse)
+```
+
+```{r cars}
+data <- read.csv("data/Motor_Vehicles_Collision_-_Crashes.csv")
+```
+
