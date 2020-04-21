@@ -1,11 +1,24 @@
 ---
 title: "Analysis"
+author: Resid(COVID) + Joe Choo, Glen Morgenstern, Carrie Wang, and Zhixue (Mary) Wang
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+## Research Question
+
+The coronavirus has hit perhaps no American city quite as hard as New York, where more than 10,000 residents have died due to it. Yet, New Yorkers have heard conflicting advice from Governer Andrew Cuomo and President Donald Trump. Our team decided to look at how the stay-at-home order and other advice from government officials affected how New Yorkers drive. With reduced traffic, are accidents down? Has the lockdown affected New York's six boroughs differently?
+
+Motivating question: **How has government guidance affected New York drivers' motivations and safety?**
+
+## Data
+
+The data comes from the City of New York's website. This data set consists of police reports on all motor vehicle collisions in New York City  as of April 18. A police report is warranted when there is a fatality or injury or damage of $1000 or more. Our analysis will focus only on collisions in 2020.
+
+You can find the updated data set at: https://data.cityofnewyork.us/Public-Safety/Motor-Vehicle-Collisions-Crashes/h9gi-nx95?fbclid=IwAR1UoErhqzmJrviRZ4zkpYu7cHhOgCAA417o6A3rhrIZSKrXPPNVjdzsWUQ
 
 ## Set Up
 
@@ -16,3 +29,6 @@ library(tidyverse)
 ```{r cars}
 data <- read.csv("data/Motor_Vehicle_Collisions_-_Crashes.csv")
 ```
+
+
+ 
