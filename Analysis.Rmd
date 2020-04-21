@@ -44,4 +44,7 @@ March 28 - Trump signs $2.2 trillion stimulus bill
 April 3 - CDC recommends wearing masks
 April 14 - Cuomo says he would defy Trump order to reopen New York
 April 17 - Trump tweets "Liberate" Minnesota, Michigan, Virginia
+
+## Data Wrangling
+
  
