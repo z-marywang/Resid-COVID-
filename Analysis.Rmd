@@ -42,7 +42,9 @@ March 17 - De Blasio says NYC considering order, Cuomo says it won't happen
 March 20 - Cuomo orders lockdown
 March 28 - Trump signs $2.2 trillion stimulus bill
 April 3 - CDC recommends wearing masks
+April 6 - Cuomo extends stay at home order to April 29
 April 14 - Cuomo says he would defy Trump order to reopen New York
+April 16 - Cuomo extends stay at home order to May 15
 April 17 - Trump tweets "Liberate" Minnesota, Michigan, Virginia
 
 ## Data Wrangling
