@@ -47,4 +47,15 @@ April 17 - Trump tweets "Liberate" Minnesota, Michigan, Virginia
 
 ## Data Wrangling
 
- 
+Make all street names upper case.
+```{r}
+data$ON.STREET.NAME = toupper(data$ON.STREET.NAME)
+data$OFF.STREET.NAME = toupper(data$OFF.STREET.NAME)
+data$CROSS.STREET.NAME = toupper(data$CROSS.STREET.NAME)
+```
+
+Confirm no duplicate collision IDs.
+```{r}
+data[duplicated(data$COLLISION_ID), ]
+```
+No duplicates---all good.
