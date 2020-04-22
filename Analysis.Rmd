@@ -321,6 +321,7 @@ data %>%
 
 ```
 
+
 ```{r map}
 boroughs_included <- data %>% filter(BOROUGH=="BROOKLYN" | BOROUGH=="MANHATTAN" | BOROUGH=="QUEENS" | BOROUGH=="BRONX" | BOROUGH=="STATEN ISLAND")
 ggplot(data=boroughs_included, mapping=aes(x=LONGITUDE, y=LATITUDE, colour = BOROUGH)) + geom_point() + xlim(-74.3,-73.7) + ylim(40.5, 40.92) + labs(x="Longitude", y="Latitude", title="Car Crashes by Location")
