@@ -261,6 +261,7 @@ data <- data %>%
 
 ### Exploratory Data Analysis
 ```{r eda}
+
 data %>%
    ggplot(aes(x = weekday)) +
    geom_bar() +
@@ -283,6 +284,14 @@ data %>%
 data %>%
    count(person_tot)
 data %>%
+   summarise(mean = mean(person_tot),
+             sd = sd(person_tot))
+data %>%
+   summarise(mean = mean(person_tot),
+             sd = sd(person_tot),
+             med = median(person_tot),
+             iqr = IQR(person_tot))
+data %>%
    ggplot(aes(x = month)) +
    geom_bar() +
    labs(x = "Month",
@@ -292,8 +301,7 @@ data %>%
    ggplot(aes(x=daytot)) +
    geom_freqpoly()
 data %>%
-   ggplot(aes(x=daytot, y = count(daytot))) +
-   geom_line()
+   count(month)
 data %>%
    count(month)
 data %>%
@@ -301,35 +309,113 @@ data %>%
   geom_bar(position = "fill") +
   labs(title = "Relationship between Day of Week and Time of day",
        x = "Day of week", y = "Proportion")
-###maybe more PM crashes on weekends?
+table <- table(data$time_of_day, data$weekday)
+prop.table(table, margin = 2)
 data %>%
    ggplot(aes(x = weekday, y = person_tot)) +
    geom_boxplot() +
    labs(title = "Relationship between Day of Week and Killed/Injured",
        x = "day of week", y = "Killed/Injured")
 data %>%
+   group_by(weekday) %>%
+   summarise(mean = mean(person_tot),
+             sd = sd(person_tot),
+             med = median(person_tot),
+             iqr = IQR(person_tot))
+data %>%
+  ggplot(aes(x = weekday, fill = time_of_day)) +
+  geom_bar(position = "fill") +
+  labs(title = "Relationship between Day of Week and Time of day",
+       x = "Day of week", y = "Proportion")
+data %>%
+  ggplot(aes(x = month, fill = time_of_day)) +
+  geom_bar(position = "fill") +
+  labs(title = "Relationship between Month and Time of day",
+       x = "Day of week", y = "Proportion")
+table <- table(data$time_of_day, data$month)
+prop.table(table, margin = 2)
+data %>%
+  ggplot(aes(x = month, fill = weekday)) +
+  geom_bar(position = "fill") +
+  labs(title = "Relationship between Month and Day of Week",
+       x = "Month", y = "Proportion")
+table <- table(data$weekday, data$month)
+prop.table(table, margin = 2)
+data %>%
    ggplot(aes(x = as.character(month), y = person_tot)) +
    geom_boxplot() +
    labs(title = "Relationship between Month and Killed/Injured",
        x = "month", y = "Killed/Injured")
 data %>%
+   ggplot(aes(x = daytot, y = person_tot)) +
+   geom_point()
+data %>%
+   group_by(month) %>%
+   summarise(mean = mean(person_tot),
+             sd = sd(person_tot),
+             med = median(person_tot),
+             iqr = IQR(person_tot))
+data %>%
   ggplot(aes(x = month, fill = VEHICLE.TYPE.CODE.1new)) +
   geom_bar(position = "fill") +
   labs(title = "Relationship between month and vehicle",
        x = "Month", y = "Proportion")
-### maybe larger proportion of sedans compared to everything else now
+table <- table(data$VEHICLE.TYPE.CODE.1new, data$month)
+prop.table(table, margin = 2)
 
+```
+
+The above plot demonstrates the preliminary exploratory data analysis for our research.
+
+The frequency of over the weekdays seem to be evenly distributed. However, weekend crashes differ: Fridays seem to have the most number of crashes, whereas Saturdays and Sundays (especially Sundays) seem to result in far fewer crashes.
+There seem to be considerably more crashes that occur in PM hours than AM hours.
+The vast majority of crashes result in 0 injuries and fatalities. The histogram for the number of total injuries and fatalities is highly skewed right. The average number of injuries/fatalities per crash is .294 with a standard deviation of .658, whereas both the median and IQR are 0.
+January and February seem to have an almost equal number of crashes. March has considerably less crashes than both January or February, and April has considerably less crashes than March, even considering the fact that approximately only half of April's total crashes are represented, as the dataset only records observations through April 14th.
+The frequency polygraph graphs the number of crashes per day against time. We can see a constant fluctuation around 1750 throughout March, which starts to drop signficantly around day 70 (which is around March 10th).
+Most of the vehicle types recorded are Sedans, followed by Sports cars.
+
+Comparing the day of week and time of day for the crashes, the weekend days seem to have a slightly higher proportion of PM crashes than do the weekday days.
+There doesn't seem to be much relationship between day of week and total number of injuries and fatalities for the crashes, although it is hard to tell because of the extreme skewness of the plot. Summary statistics reveal slightly higher injury/fatality rates for Saturdays and Sundays (although the median and IQR are 0 for each day of the week), but we don't know yet if this is significant.
+There seem to be a higher proportion in PM crashes instead of AM crashes in  March and April, compared to January and February.
+There doesn't seem to be much difference in the distribution of the days of the week of the crashes over the four months.
+Comparing month of crashes and number of injuries/fatalities per crash, there seem to be less crashes in April with a higher number of injuries/fatalities, but it is important to keep in mind that only half of April's days are observed. However, summary statistics demonstrate that there doesn't seem to be much significant difference in the average number of people injured/killed per crash, or the standard deviation (April has a slightly higher average, but especially because it has less datapoints, we would need to do more tests to determine the significance of this difference.)
+Graphing the number of fatalities/injuries in each crash over time, we can wee that the number of injuries and fatalities in each crash have much less scatter after around day 74 (about March 14th), which demonstrates that there have been virtually no crashes with a considerably high number (5+) of injuries/fatalities since then.
+Comparing month with type of vehicle, there seems to be a slightly higher proportion of Sedans in crashes for March and more so April, though it is of note that there are fewer April dates.
+
+The following plot shows the geographic distribution of all NYC car crashes in 2020 from the dataset.
+```{r scatter 1}
+library(naniar)
+library(ggmap)
+data <- data %>% 
+  replace_with_na_at(.vars = c("LONGITUDE","LATITUDE"),
+                     condition = ~.x == 0)
+qmplot(LONGITUDE, LATITUDE, data = data, color = I("red"), alpha = I(.1), size = I(.01))
+
+```
+
+To try to spot patterns in scatter over time, we divide the dataset into monthly periods, and plot the geographic distribution by month.
+```{r scatter2}
+data.s1 <- data[data$month == 1 ,]
+data.s2 <- data[data$month == 2 ,]
+data.s3 <- data[data$month == 3 ,]
+data.s4 <- data[data$month == 4 ,]
+
+qmplot(LONGITUDE, LATITUDE, data = data.s1, color = I("red"), alpha = I(.2), size = I(.01))
+qmplot(LONGITUDE, LATITUDE, data = data.s2, color = I("red"), alpha = I(.2), size = I(.01))
+qmplot(LONGITUDE, LATITUDE, data = data.s3, color = I("red"), alpha = I(.2), size = I(.01))
+qmplot(LONGITUDE, LATITUDE, data = data.s4, color = I("red"), alpha = I(.2), size = I(.01))
+```
+From the above plots, we can see that the March and April have far less density of crashes in all of the city as a whole. We note, however, that only half of April is accounted for in the dataset. To account for this, we decrease the transparency of points and plot April again to see if there are notable differences in geographic location.
+
+```{r scatter3}
+qmplot(LONGITUDE, LATITUDE, data = data.s4, color = I("red"), alpha = I(.6), size = I(.01))
+
+```
+Whereas the geographic scatterplots for January through March showed a higher concentration of crashes in the lower Manhattan area, the plot for April so far seems to show crashes that are much more evenly distributed throughout New York City (a trend that we can see starting in March, though to a lesser extent). In fact, the higher concentrated areas now seem to be the area in between Manhattan and Bronx, as well as the middle of Brooklyn. However, we must keep in mind that the April plot is constructed with fewer data points- both because of the shorter time period, and because of the overall lower frequency of crashes. Furthermore, we must keep in mind that there are several missing values that weren't included in these geographic scatterplots, which may be missing systematically.
 ```
 
 
 ```{r map}
 boroughs_included <- data %>% filter(BOROUGH=="BROOKLYN" | BOROUGH=="MANHATTAN" | BOROUGH=="QUEENS" | BOROUGH=="BRONX" | BOROUGH=="STATEN ISLAND")
 ggplot(data=boroughs_included, mapping=aes(x=LONGITUDE, y=LATITUDE, colour = BOROUGH)) + geom_point() + xlim(-74.3,-73.7) + ylim(40.5, 40.92) + labs(x="Longitude", y="Latitude", title="Car Crashes by Location")
-```
-
-```{r more stuff}
-p <- ggmap(get_googlemap(center = c(lon = 40.7128, lat = 74.0060),
-                    zoom = 11, scale = 2,
-                    maptype ='terrain',
-                    color = 'color'))
 ```
