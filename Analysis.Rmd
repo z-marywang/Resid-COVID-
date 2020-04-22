@@ -64,3 +64,162 @@ Confirm no duplicate collision IDs.
 data[duplicated(data$COLLISION_ID), ]
 ```
 No duplicates---all good.
+
+```{r}
+data <- data %>%
+  select(-X)
+```
+
+```{r}
+data %>%
+   count(CONTRIBUTING.FACTOR.VEHICLE.1)
+```
+
+Regroup so that accerlator defective, brakes defective, windshield inadequate, tire failure, tow hitch defective, headlights defective, and other lighting defects are in one group called mechanical defect; using on board navigation device, texting, cell phone (hand-held), cell phone (hands-free), and other electronic device are under distraction; listening is under distracted; fatigued/drowsy, fell asleep, and lost consciousness are under drowsy; pavement defective, shoulders defective, and pavement slippery under environment.
+
+```{r}
+data <- data %>%
+  mutate(CONTRIBUTING.FACTOR.VEHICLE.1 = as.character(CONTRIBUTING.FACTOR.VEHICLE.1)) %>%
+   mutate(CONTRIBUTING.FACTOR.VEHICLE.1 = case_when(
+     CONTRIBUTING.FACTOR.VEHICLE.1 == ""  ~ "Unspecified",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Glare"  ~ "View Obstructed/Limited",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Tire Failure/Inadequate"  ~ "Mechanical Defect",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Windshield Inadequate"  ~ "Mechanical Defect",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Tow Hitch Defective"  ~ "Mechanical Defect",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Accelerator Defective"  ~ "Mechanical Defect",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Brakes Defective"  ~ "Mechanical Defect",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Headlights Defective"  ~ "Mechanical Defect",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Other Lighting Defects"  ~ "Mechanical Defect",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Cell Phone (hand-Held)"  ~ "Driver Inattention/Distraction",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Listening/Using Headphones"  ~ "Driver Inattention/Distraction",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Other Electronic Device"  ~ "Driver Inattention/Distraction",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Using On Board Navigation Device"  ~ "Driver Inattention/Distraction",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Cell Phone (hands-free)"  ~ "Driver Inattention/Distraction",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Outside Car Distraction"  ~ "Driver Inattention/Distraction",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Passenger Distraction"  ~ "Driver Inattention/Distraction",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Texting"  ~ "Driver Inattention/Distraction",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Eating or Drinking"  ~ "Driver Inattention/Distraction",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Fatigued/Drowsy"  ~ "Tired",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Fell Asleep"  ~ "Tired",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Lost Consciousness"  ~ "Tired",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Lane Marking Improper/Inadequate"  ~ "Road Environment",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Obstruction/Debris"  ~ "Road Environment",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Pavement Defective"  ~ "Road Environment",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Pavement Slippery"  ~ "Road Environment",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Shoulders Defective/Improper"  ~ "Road Environment",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Prescription Medication"  ~ "Health",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Physical Disability"  ~ "Health",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Illnes"  ~ "Health",
+     CONTRIBUTING.FACTOR.VEHICLE.1 == "Traffic Control Device Improper/Non-Working"  ~ "Road Environment",
+    CONTRIBUTING.FACTOR.VEHICLE.1 == "Tinted Windows"  ~ "View Obstructed/Limited",
+     TRUE ~ CONTRIBUTING.FACTOR.VEHICLE.1
+   ))
+```
+
+```{r}
+data %>%
+   count(CONTRIBUTING.FACTOR.VEHICLE.1)
+```
+
+```{r}
+data %>%
+   count(VEHICLE.TYPE.CODE.1)
+```
+
+Regroup so EMERG, AMB, AMBU, AMBUL, amb, ambul are under ambulance; BOX T is under Box Truck; DELIV, DELV, deliv, devli, Deliv are under delivery; DUMP, dump is under dump; FIRE, Fire, Firet, fire, and FIRET and under Firetruck; FLATB is under Flat Bed; FORK and FORKL is under Forlift; PICKU, pick, and Pickup with mounted is under Pick-up Truck; SCHOO, schoo, Schoo under School Bus; all wheeler sednas under Sedan; Tow, tow truck, tow t, under tow truck; UTIL, UTILI, Utili under utility
+
+```{r}
+data <- data %>%
+  mutate(VEHICLE.TYPE.CODE.1 = as.character(VEHICLE.TYPE.CODE.1)) %>%
+   mutate(VEHICLE.TYPE.CODE.1 = case_when(
+     VEHICLE.TYPE.CODE.1 == "van" ~ "Van",
+     VEHICLE.TYPE.CODE.1 == "UTIL" ~ "Utility",
+     VEHICLE.TYPE.CODE.1 == "UTILI" ~ "Utility",
+     VEHICLE.TYPE.CODE.1 == "Utili" ~ "Utility",
+     VEHICLE.TYPE.CODE.1 == "" ~ "Unknown",
+     VEHICLE.TYPE.CODE.1 == "TOW T" ~ "Tow Truck",
+     VEHICLE.TYPE.CODE.1 == "Tow" ~ "Tow Truck",
+     VEHICLE.TYPE.CODE.1 == "Tow t" ~ "Tow Truck",
+     VEHICLE.TYPE.CODE.1 == "Tow Truck / Wrecker" ~ "Tow Truck",
+     VEHICLE.TYPE.CODE.1 == "TRK" ~ "Truck",
+     VEHICLE.TYPE.CODE.1 == "TRUCK" ~ "Truck",
+     VEHICLE.TYPE.CODE.1 == "2 dr sedan" ~ "Sedan",
+     VEHICLE.TYPE.CODE.1 == "3-Door" ~ "Sedan",
+     VEHICLE.TYPE.CODE.1 == "4 dr sedan" ~ "Sedan",
+     VEHICLE.TYPE.CODE.1 == "REFG" ~ "Refrigerated Van",
+     VEHICLE.TYPE.CODE.1 == "pick" ~ "Pick-up Truck",
+     VEHICLE.TYPE.CODE.1 == "PICKU" ~ "Pick-up Truck",
+     VEHICLE.TYPE.CODE.1 == "Pickup with mounted Camper" ~ "Pick-up Truck",
+     VEHICLE.TYPE.CODE.1 == "FORKL" ~ "Forklift",
+     VEHICLE.TYPE.CODE.1 == "FORK" ~ "Forklift",
+     VEHICLE.TYPE.CODE.1 == "FLATB" ~ "Flat Bed",
+     VEHICLE.TYPE.CODE.1 == "TRAC" ~ "Tractor Truck",
+     VEHICLE.TYPE.CODE.1 == "TRACT" ~ "Tractor Truck",
+     VEHICLE.TYPE.CODE.1 == "Tract" ~ "Tractor Truck",
+     VEHICLE.TYPE.CODE.1 == "tract" ~ "Tractor Truck",
+     VEHICLE.TYPE.CODE.1 == "Tractor Truck Diesel" ~ "Tractor Truck",
+     VEHICLE.TYPE.CODE.1 == "Tractor Truck Gasoline" ~ "Tractor Truck",
+     VEHICLE.TYPE.CODE.1 == "SCHOO" ~ "School Bus",
+     VEHICLE.TYPE.CODE.1 == "schoo" ~ "School Bus",
+     VEHICLE.TYPE.CODE.1 == "Schoo" ~ "School Bus",
+     VEHICLE.TYPE.CODE.1 == "Fire" ~ "Firetruck",
+     VEHICLE.TYPE.CODE.1 == "Firet" ~ "Firetruck",
+     VEHICLE.TYPE.CODE.1 == "FIRE" ~ "Firetruck",
+     VEHICLE.TYPE.CODE.1 == "FIRET" ~ "Firetruck",
+     VEHICLE.TYPE.CODE.1 == "fire" ~ "Firetruck",
+     VEHICLE.TYPE.CODE.1 == "FIRE" ~ "Firetruck",
+     VEHICLE.TYPE.CODE.1 == "EMERG" ~ "Ambulance",
+     VEHICLE.TYPE.CODE.1 == "AMB" ~ "Ambulance",
+     VEHICLE.TYPE.CODE.1 == "AMBU" ~ "Ambulance",
+     VEHICLE.TYPE.CODE.1 == "AMBUL" ~ "Ambulance",
+     VEHICLE.TYPE.CODE.1 == "ambul" ~ "Ambulance",
+     VEHICLE.TYPE.CODE.1 == "Amb" ~ "Ambulance",
+     VEHICLE.TYPE.CODE.1 == "Ambul" ~ "Ambulance",
+     VEHICLE.TYPE.CODE.1 == "Ambulance" ~ "Ambulance",
+     VEHICLE.TYPE.CODE.1 == "deliv" ~ "Delivery",
+     VEHICLE.TYPE.CODE.1 == "delvi" ~ "Delivery",
+     VEHICLE.TYPE.CODE.1 == "DELIV" ~ "Delivery",
+     VEHICLE.TYPE.CODE.1 == "DELV" ~ "Delivery",
+     VEHICLE.TYPE.CODE.1 == "Deliv" ~ "Delivery",
+     VEHICLE.TYPE.CODE.1 == "DUMP" ~ "Dump",
+     VEHICLE.TYPE.CODE.1 == "dump" ~ "Dump",
+     VEHICLE.TYPE.CODE.1 == "BOX T" ~ "Box Truck",
+     VEHICLE.TYPE.CODE.1 == "Bobca" ~ "Station Wagon/Sport Utility Vehicle",
+     VEHICLE.TYPE.CODE.1 == "Armored Truck" ~ "Truck",
+     VEHICLE.TYPE.CODE.1 == "Beverage Truck" ~ "Truck",
+     VEHICLE.TYPE.CODE.1 == "truck" ~ "Truck",
+     VEHICLE.TYPE.CODE.1 == "COM" ~ "Commercial",
+     VEHICLE.TYPE.CODE.1 == "Comme" ~ "Commercial",
+     VEHICLE.TYPE.CODE.1 == "FDNY" ~ "Firetruck",
+     VEHICLE.TYPE.CODE.1 == "Fdny" ~ "Firetruck",
+     VEHICLE.TYPE.CODE.1 == "ford" ~ "Ford",
+     VEHICLE.TYPE.CODE.1 == "DIRT" ~ "Station Wagon/Sport Utility Vehicle",
+     VEHICLE.TYPE.CODE.1 == "Unkno" ~ "Unknown",
+     VEHICLE.TYPE.CODE.1 == "Van Camper" ~ "Van",
+     VEHICLE.TYPE.CODE.1 == "moped" ~ "Moped",
+     VEHICLE.TYPE.CODE.1 == "GOLF" ~ "Carry All",
+     VEHICLE.TYPE.CODE.1 == "H1" ~ "Station Wagon/Sport Utility Vehicle",
+     VEHICLE.TYPE.CODE.1 == "Hears" ~ "Hearse",
+     VEHICLE.TYPE.CODE.1 == "Hopper" ~ "Freight",
+     VEHICLE.TYPE.CODE.1 == "MTA" ~ "City",
+     VEHICLE.TYPE.CODE.1 == "OMR" ~ "Omnibus",
+     VEHICLE.TYPE.CODE.1 == "OMS" ~ "Omnibus",
+     VEHICLE.TYPE.CODE.1 == "SCOOT" ~ "Motorscooter",
+     VEHICLE.TYPE.CODE.1 == "TR-Tr" ~ "Trailer",
+     VEHICLE.TYPE.CODE.1 == "TRAIL" ~ "Trailer",
+     VEHICLE.TYPE.CODE.1 == "TRL" ~ "Trailer",
+     VEHICLE.TYPE.CODE.1 == "Trail" ~ "Trailer",
+     VEHICLE.TYPE.CODE.1 == "UNK" ~ "Unknown",
+     VEHICLE.TYPE.CODE.1 == "US PO" ~ "USPS",
+     VEHICLE.TYPE.CODE.1 == "posta" ~ "USPS",
+     VEHICLE.TYPE.CODE.1 == "POSTA" ~ "USPS",
+     VEHICLE.TYPE.CODE.1 == "MAIL" ~ "USPS",
+     VEHICLE.TYPE.CODE.1 == "FREIG" ~ "Freight",
+     TRUE ~ VEHICLE.TYPE.CODE.1
+   ))
+```
+
+```{r}
+data %>%
+   count(VEHICLE.TYPE.CODE.1)
+```
