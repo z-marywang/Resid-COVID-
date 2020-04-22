@@ -24,6 +24,7 @@ You can find the updated data set at: https://data.cityofnewyork.us/Public-Safet
 
 ```{r}
 library(tidyverse)
+library(lubridate)
 ```
 
 ```{r cars}
@@ -222,4 +223,19 @@ data <- data %>%
 ```{r}
 data %>%
    count(VEHICLE.TYPE.CODE.1)
+```
+
+```{r}
+data <- data %>%
+   mutate(weekday = wday(mdy(CRASH.DATE), label = TRUE)) %>%
+   separate(CRASH.DATE, c("month", "day", "year"), "/")
+```
+
+```{r}
+data <- data %>%
+   mutate(time_of_day = case_when(
+      hm(CRASH.TIME) < hm("12:00") ~ "AM",
+      TRUE ~ "PM"
+   )) %>%
+   mutate(person_tot = NUMBER.OF.PERSONS.INJURED + NUMBER.OF.PERSONS.KILLED)
 ```
