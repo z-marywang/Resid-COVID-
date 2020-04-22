@@ -301,7 +301,10 @@ data %>%
    geom_freqpoly()
 data %>%
    count(month)
-
+   ggplot(aes(x=daytot, y = count(daytot))) +
+   geom_line()
+data %>%
+   count(month)
 data %>%
   ggplot(aes(x = weekday, fill = time_of_day)) +
   geom_bar(position = "fill") +
