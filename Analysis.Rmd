@@ -419,7 +419,7 @@ qmplot(LONGITUDE, LATITUDE, data = data.s4, color = I("red"), alpha = I(.6), siz
 
 ```
 Whereas the geographic scatterplots for January through March showed a higher concentration of crashes in the lower Manhattan area, the plot for April so far seems to show crashes that are much more evenly distributed throughout New York City (a trend that we can see starting in March, though to a lesser extent). In fact, the higher concentrated areas now seem to be the area in between Manhattan and Bronx, as well as the middle of Brooklyn. However, we must keep in mind that the April plot is constructed with fewer data points- both because of the shorter time period, and because of the overall lower frequency of crashes. Furthermore, we must keep in mind that there are several missing values that weren't included in these geographic scatterplots, which may be missing systematically.
-```
+
 
 
 ```{r map}
