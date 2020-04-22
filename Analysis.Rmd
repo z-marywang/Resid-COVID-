@@ -261,6 +261,7 @@ data <- data %>%
 
 ### Exploratory Data Analysis
 ```{r eda}
+
 data %>%
    ggplot(aes(x = weekday)) +
    geom_bar() +
@@ -301,8 +302,6 @@ data %>%
    geom_freqpoly()
 data %>%
    count(month)
-   ggplot(aes(x=daytot, y = count(daytot))) +
-   geom_line()
 data %>%
    count(month)
 data %>%
