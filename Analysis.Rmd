@@ -1,7 +1,7 @@
 ---
 title: "Analysis"
 author: Resid(COVID) + Joe Choo, Glen Morgenstern, Carrie Wang, and Zhixue (Mary) Wang
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
