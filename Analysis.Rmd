@@ -426,3 +426,30 @@ Whereas the geographic scatterplots for January through March showed a higher co
 boroughs_included <- data %>% filter(BOROUGH=="BROOKLYN" | BOROUGH=="MANHATTAN" | BOROUGH=="QUEENS" | BOROUGH=="BRONX" | BOROUGH=="STATEN ISLAND")
 ggplot(data=boroughs_included, mapping=aes(x=LONGITUDE, y=LATITUDE, colour = BOROUGH)) + geom_point() + xlim(-74.3,-73.7) + ylim(40.5, 40.92) + labs(x="Longitude", y="Latitude", title="Car Crashes by Location")
 ```
+
+Analyze by lockdown and borough:
+```{r}
+boroughs_included %>% group_by(lockdown, BOROUGH) %>% summarise(n())
+```
+
+```{r}
+boroughs_included %>% group_by(lockdown) %>% summarise(n())
+```
+
+```{r}
+4280/24501 #Bronx pre
+8191/24501 #Brooklyn pre
+4217/24501 #Manhattan pre
+7234/24501 #Queens pre
+579/24501 #Staten Island pre
+
+```
+
+``` {r}
+455/2266
+792/2266
+242/2266
+688/2266
+89/2266
+```
+
